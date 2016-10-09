@@ -1,0 +1,55 @@
+<html>
+<head>
+	<style>
+		body {
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="myCanvas" width="300" height="300"></canvas>
+
+	<script language="javascript" src="src/conway.js"></script>
+	<script>
+
+	var canvas = document.getElementById('myCanvas');
+	var context = canvas.getContext('2d');
+	var c = new Conway(canvas, context);
+
+	function getMousePos(canvas, evt) {
+		var rect = canvas.getBoundingClientRect();
+		// Returning the coursor coordinates (x,y)
+		return {
+			x: evt.clientX,
+			y: evt.clientY
+		};
+	}
+
+	// Binding mousemove event to the canvas
+	canvas.addEventListener('mousedown', function(evt) {
+		if (c.isEvolving) {
+			return;
+		}
+		var mousePos = getMousePos(canvas, evt);
+		var posX = Math.floor(mousePos.x/10)*10;
+		var posY = Math.floor(mousePos.y/10)*10;
+
+		// Drawing the Square
+		context.rect(posX,posY,10,10);
+		context.fillStyle = '#FF0000';
+		context.fill();
+
+		x = posX/10;
+		y = posY/10;
+		c.addElement(y,x);
+		c.elements = c.tmp_elements;
+	}, false);
+
+	c.draw();
+	</script>
+	<br /><br />
+	<button onClick="c.start()">Evolve</button> &nbsp;
+	<button onClick="c.stop()">Stop</button>
+</body>
+</html>
